@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.zeemoog.testpokeapi.ui.screens.detail.DetailPokemon
 import com.zeemoog.testpokeapi.ui.screens.main.LoadPokeList
+import com.zeemoog.testpokeapi.ui.screens.main.LoadPokesFireTypes
 
 /** Navigation 'SIN' implementacion de NavCommand con Feature
 @Composable
@@ -90,7 +91,7 @@ fun Navigation(navController: NavHostController) {
  *  - navegacion generica
  */
 @Composable
-fun Navigation(navController: NavHostController, actionNameType: String) {
+fun Navigation(navController: NavHostController) {
 
     /** Navegacion entra pantallas aplicando Funciones de extension
      *  - reduce codigo y repeticion en la navegacion
@@ -121,7 +122,11 @@ fun Navigation(navController: NavHostController, actionNameType: String) {
          */
         startDestination = Feature.POKEMONES.route
     ) {
-        pokemonesNav(navController, actionNameType)
+        pokemonesNav(navController)
+
+        firePokesNav(navController)
+
+        //waterPokesNav(navController)
     }
 
 }
@@ -189,7 +194,11 @@ private fun NavGraphBuilder.pokemonesNav(navController: NavHostController) {
 } **/
 
 /** 'CON' aplicacion del grafo de navegacion exclusivo **/
-private fun NavGraphBuilder.pokemonesNav(navController: NavHostController, actionNameType: String) {
+private fun NavGraphBuilder.pokemonesNav(navController: NavController) {
+
+    println("------------------ ENTRO ALL")
+
+
     navigation(
         startDestination = NavCommand.ContentType(Feature.POKEMONES).route, //la navegacion comienza desde 'home'
         route = Feature.POKEMONES.route // define la ruta padre de todos los composables q esten dentro
@@ -198,12 +207,11 @@ private fun NavGraphBuilder.pokemonesNav(navController: NavHostController, actio
          *  - la cual, esta navegation tiene una ruta padre (o principal) q las engloba
          */
 
-        /** composable(route = NavCommand.Main.route) {
-         *  - sin funcion de extension del composable
-         */
-
         // usando funcion de extension de composable (no necesitamos detallar route y args)
         composable(NavCommand.ContentType(Feature.POKEMONES)) {
+
+            println("------------------ ENTRO ALL - COMPOSABLE ")
+
             /**
              * - ahora vamos a evitar pasar por todos lados el navController
              * - ya q evitamos q un click en 'ui' sobre un poke sea el q tenga
@@ -212,11 +220,7 @@ private fun NavGraphBuilder.pokemonesNav(navController: NavHostController, actio
              */
             //LoadPokeList(navController)
 
-
-            println("------------------------: $actionNameType")
-
             LoadPokeList(
-                actionNameType,
                 onPokeClick = { pokemon ->
                     /**
                      * ahora la ruta '"detail/${pokemon.id}"'
@@ -266,6 +270,67 @@ private fun NavGraphBuilder.pokemonesNav(navController: NavHostController, actio
 
     }
 }
+
+
+private fun NavGraphBuilder.firePokesNav(navController: NavController) {
+
+    println("------------------ ENTRO NAV FIRE")
+
+    navigation(
+        startDestination = NavCommand.ContentType(Feature.FIREPOKES).route,
+        route = Feature.FIREPOKES.route
+    ) {
+        composable(NavCommand.ContentType(Feature.FIREPOKES)) {
+
+            println("------------------ ENTRO NAV FIRE - COMPOSABLE")
+
+            LoadPokesFireTypes(
+                onPokeClick = { pokemon ->
+                    navController.navigate(
+                        NavCommand.ContentDetail(Feature.FIREPOKES).createNavRoute(pokemon.id)
+                    )
+                }
+            )
+        }
+
+        composable(NavCommand.ContentDetail(Feature.FIREPOKES)) { backStackEntry ->
+
+            val id = backStackEntry.arguments?.getInt(NavArg.PokemonId.key)
+            requireNotNull(id)
+
+            DetailPokemon(id)
+        }
+
+    }
+}
+
+
+/** private fun NavGraphBuilder.waterPokesNav(navController: NavController) {
+    navigation(
+        startDestination = NavCommand.ContentType(Feature.WATERPOKES).route,
+        route = Feature.WATERPOKES.route
+    ) {
+        composable(NavCommand.ContentType(Feature.WATERPOKES)) {
+            LoadPokeList(
+                "water",
+                onPokeClick = { pokemon ->
+                    navController.navigate(
+                        NavCommand.ContentDetail(Feature.WATERPOKES).createNavRoute(pokemon.id)
+                    )
+                }
+            )
+        }
+
+        composable(NavCommand.ContentDetail(Feature.WATERPOKES)) { backStackEntry ->
+
+            val id = backStackEntry.arguments?.getInt(NavArg.PokemonId.key)
+            requireNotNull(id)
+
+            DetailPokemon(id)
+        }
+
+    }
+} **/
 
 
 /**

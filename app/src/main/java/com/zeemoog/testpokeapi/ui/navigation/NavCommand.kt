@@ -1,7 +1,29 @@
 package com.zeemoog.testpokeapi.ui.navigation
 
+import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.zeemoog.testpokeapi.R
+
+/**
+ * identifica los elementos de navegacion
+ *  - y a su vez utilizo para llenar el dropdownmenu por tipo en la appbar
+ *      - tomando su nombre
+ */
+enum class NavItem(
+    val navCommand: NavCommand,
+    @StringRes val title: Int
+) {
+    ALL(NavCommand.ContentType(Feature.POKEMONES), R.string.all),
+    FIRE(NavCommand.ContentType(Feature.FIREPOKES), R.string.firepokes),
+    WATER(NavCommand.ContentType(Feature.WATERPOKES), R.string.waterpokes)
+}
+
 
 /**
  * Va a definir todas las navegaciones posibles (No es GENERICA)

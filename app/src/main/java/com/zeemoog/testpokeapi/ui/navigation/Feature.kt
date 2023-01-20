@@ -6,10 +6,8 @@ package com.zeemoog.testpokeapi.ui.navigation
  */
 enum class Feature(val route: String) {
     // plural de pokemon en ingles es 'pokemon' (muy confuso)
-    POKEMONES("pokemones")
+    POKEMONES("pokemones"),
+    FIREPOKES("fire"),
+    WATERPOKES("water")
 
-    /** aqui debajo irian mas tipos navegaciones, por ej:
-     *  - MOVIES("movies")
-     *  -SERIES("series")
-     */
 }

@@ -1,6 +1,6 @@
 package com.zeemoog.testpokeapi.ui
 
-import android.widget.Toast
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -10,22 +10,25 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.zeemoog.testpokeapi.ui.navigation.Feature
-import com.zeemoog.testpokeapi.ui.navigation.NavCommand
 import com.zeemoog.testpokeapi.ui.navigation.Navigation
 import com.zeemoog.testpokeapi.ui.screens.common.TypesMenu
 import com.zeemoog.testpokeapi.ui.theme.TestPokeApiTheme
 
 @Composable
 fun PokeApp() {
+
+    var typesMenuOpen by remember { mutableStateOf(false) }
+    //var actionNameType by remember { mutableStateOf("All") }
+
+    //var navItem by remember { mutableStateOf(NavItem.ALL) }
+
+    /**
     /**
      * permite saber en q parte de la pantalla estamos
      * - por eso lo saque de Navigation
      */
-    val navController = rememberNavController()
+    //val navController = rememberNavController()
+    val navController: NavHostController = rememberNavController()
 
     /**
      * permite acceder a la ruta actual
@@ -40,9 +43,10 @@ fun PokeApp() {
      */
     val currentRoute = navBackStackEntry?.destination?.route ?: ""
 
-    var typesMenuOpen by remember { mutableStateOf(false) }
-    //var actionNameType by remember { mutableStateOf("Fire") }
-    var actionNameType = "All"
+    */
+
+    val appState = rememberPokeAppState()
+
 
     PokeAppScreen {
 
@@ -52,7 +56,7 @@ fun PokeApp() {
                     title = { Text(text = "Pokedex") },
                     navigationIcon = {
                         // si la ruta actual es home, muestra menu sino estamos en detalle
-                        if (currentRoute.contains(NavCommand.ContentType(Feature.POKEMONES).route)) {
+                        if (/**currentRoute.contains(NavCommand.ContentType(Feature.POKEMONES).route)**/ true) {
                             IconButton(onClick = { /*Menu*/ }) {
                                 Icon(
                                     imageVector = Icons.Default.Menu,
@@ -60,7 +64,7 @@ fun PokeApp() {
                                 )
                             }
                         } else {
-                            IconButton(onClick = { navController.popBackStack() }) {
+                            IconButton(onClick = { /**navController.popBackStack()*/ }) {
                                 Icon(
                                     imageVector = Icons.Default.ArrowBack,
                                     contentDescription = "Go to previous Screen"
@@ -76,7 +80,9 @@ fun PokeApp() {
                             )
                             TypesMenu(
                                 expanded = typesMenuOpen,
-                                onItemClick = { actionNameType = it },
+                                //onItemClick = { actionNameType = it },
+                                navOptions = PokeAppState.TYPE_NAV_OPTIONS,
+                                onNavItemClick = { appState.onNavItemClick(it) },
                                 onDismiss = { typesMenuOpen = false }
                             )
                         }
@@ -87,7 +93,7 @@ fun PokeApp() {
         ) { padding ->
             // como scaffold devuelve un padding es necesario asignarlo al contenido, por eso uso un box
             Box(modifier = Modifier.padding(padding)) {
-                Navigation(navController, actionNameType)
+                Navigation(appState.navController)
             }
         }
 

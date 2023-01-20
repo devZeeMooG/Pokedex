@@ -1,7 +1,6 @@
 package com.zeemoog.testpokeapi.ui.screens.main
 
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,16 +13,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.zeemoog.testpokeapi.data.model.Pokemon
 import com.zeemoog.testpokeapi.data.repositories.PokemonsRepository
+import com.zeemoog.testpokeapi.ui.screens.common.PokemonMainScreen
 
 
 @Composable
-fun LoadPokeList(actionNameType: String, onPokeClick: (Pokemon) -> Unit) {
+fun LoadPokeList(onPokeClick: (Pokemon) -> Unit) {
     var pokemonListState by remember { mutableStateOf(emptyList<Pokemon>()) }
 
     /**
@@ -32,15 +30,22 @@ fun LoadPokeList(actionNameType: String, onPokeClick: (Pokemon) -> Unit) {
      *  ya q es una 'funcion de suspension'
      */
 
-    //Toast.makeText(LocalContext.current, actionNameType, Toast.LENGTH_SHORT).show()
-
-    LaunchedEffect(Unit) {
-        pokemonListState = if (actionNameType == "All") {
+    /** LaunchedEffect(Unit) {
+        pokemonListState = if (actionNameType == "all") {
             PokemonsRepository.getPokemonList()  // lista de pokes en gral
         } else {
-            PokemonsRepository.getPokemonListByType(actionNameType.lowercase()) // traemos lista de poke x tipo
+            PokemonsRepository.getPokemonListByType(actionNameType) // traemos lista de poke x tipo
         }
+    } **/
+
+    LaunchedEffect(Unit) {
+        pokemonListState = PokemonsRepository.getPokemonList()
     }
+
+    pokemonListState.forEach {
+        println("--------------- ALL: ${it.name}")
+    }
+
     
     PokemonMainScreen(
         pokemons = pokemonListState,
@@ -49,7 +54,7 @@ fun LoadPokeList(actionNameType: String, onPokeClick: (Pokemon) -> Unit) {
 }
 
 
-@Composable
+/**@Composable
 fun PokemonMainScreen(
     pokemons: List<Pokemon>,
     onPokeClick: (Pokemon) -> Unit
@@ -65,10 +70,10 @@ fun PokemonMainScreen(
             )
         }
     }
-}
+} **/
 
 
-@Composable
+/**@Composable
 fun PokemonItem(
     pokemon: Pokemon,
     onClick: () -> Unit
@@ -100,4 +105,4 @@ fun PokemonItem(
             )
         }
     }
-}
+} **/

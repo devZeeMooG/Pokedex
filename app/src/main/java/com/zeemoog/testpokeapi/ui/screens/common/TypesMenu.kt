@@ -1,39 +1,44 @@
 package com.zeemoog.testpokeapi.ui.screens.common
 
-import android.widget.Toast
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.zeemoog.testpokeapi.ui.navigation.NavItem
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TypesMenu(
     expanded: Boolean,
-    onItemClick: (String) -> Unit,
+    //onItemClick: (String) -> Unit,
+    navOptions: List<NavItem>,
+    onNavItemClick: (NavItem) -> Unit,
     onDismiss: () -> Unit
 ) {
-
-    val options = listOf(
+    /**val options = listOf(
         "All",
         "Fire",
         "Water",
         "Grass",
         "Ghost"
-    )
+    ) **/
+
+    //val typesPoke = listOf(NavItem.ALL, NavItem.FIRE, NavItem.WATER)
 
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismiss
     ) {
-        options.forEach { type ->
+        navOptions.forEach { item ->
+            val type = stringResource(id = item.title)
             DropdownMenuItem(
                 onClick = {
-                    onItemClick(type)
+                    //onItemClick(type)
+                    onNavItemClick(item)  // paso el navItem completo (no solo el nombre del typo)
                     onDismiss()
                 }
             ) {
-                Text(text = type)
+                //Text(text = type)
+                ListItem(text = { Text(text = type) })
             }
         }
     }
