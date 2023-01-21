@@ -13,8 +13,8 @@
 
 ## Funcionalidades de la App
 * Cargar y mostrar pokemon en general
-* [Cargar y mostrar pokemon por tipo
-* [Click sobre un pokemon
-* [Mostrar detalle de un pokemon
-* []
+* Cargar y mostrar pokemon por tipo
+* Click sobre un pokemon
+* Mostrar detalle de un pokemon
+* Manejo boton atras
    
