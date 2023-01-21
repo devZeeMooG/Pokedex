@@ -29,11 +29,8 @@ fun PokeApp() {
                 TopAppBar(
                     title = { Text(text = "Pokedex") },
                     navigationIcon = {
-                        // si la ruta actual es home, muestra menu sino estamos en detalle
-                        //if (currentRoute.contains(NavCommand.ContentType(Feature.POKEMONES).route)) {
                         if (appState.showUpNavigation) {
                             IconButton(
-                                //onClick = { navController.popBackStack() }
                                 onClick = { appState.onUpClick() }
                             ) {
                                 Icon(
@@ -55,16 +52,15 @@ fun PokeApp() {
                             typeNavOptions = PokeAppState.TYPE_NAV_OPTIONS,
                             onNavItemClick = { appState.onNavItemClick(it) }
                         )
-                        /**Button(
-                            onClick = { appState.navigateFire() }
-                        ) {
-                            Text(text = "Click")
-                        } **/
                     }
                 )
             },
-            scaffoldState = rememberScaffoldState()
+            scaffoldState = rememberScaffoldState() //para gestionar el estado del menu (drawer, sin uso)
         ) { padding ->
+            /**
+             * scaffold devuelve un padding
+             * el cual es necesario asignarlo al contenido, por eso uso un box
+             */
             Box(modifier = Modifier.padding(padding)) {
                 Navigation(appState.navController)
             }

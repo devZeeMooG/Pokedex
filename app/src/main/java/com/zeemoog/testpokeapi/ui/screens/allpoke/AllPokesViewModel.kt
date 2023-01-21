@@ -9,11 +9,27 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * extiende de ViewModel()
+ * para poder usar el scope, contexto de corrutina
+ * y asi lanzar funciones de suspension
+ */
 class AllPokesViewModel: ViewModel() {
+    /**
+     * manejo del ESTADO con "STATE FLOW" (recomendado por android y google)
+     */
 
+    /**
+     * '_state' se recomienda privado para q no sea modificado desde afuera
+     * - forma de ocultar q es un matableStateFlow
+     */
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
 
+    /**
+     * bloque "init"
+     * - muestra el loading hasta q cargue la lista de pokes
+     */
     init {
         viewModelScope.launch {
             _state.value = UiState(loading = true)

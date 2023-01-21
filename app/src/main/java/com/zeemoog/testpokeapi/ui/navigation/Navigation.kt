@@ -13,6 +13,10 @@ import com.zeemoog.testpokeapi.ui.screens.allpoke.AllPokesScreen
 import com.zeemoog.testpokeapi.ui.screens.firepoke.FirePokesScreen
 
 
+/**
+ * Contiene un navCommand (comando de navegacion o ruta)
+ * y recurso string que identifica tipo o en general
+ */
 enum class NavItem(
     val navCommand: NavCommand,
     @StringRes val typeName: Int
@@ -20,11 +24,13 @@ enum class NavItem(
     ALL(NavCommand.ContentType(Feature.POKEMONES), R.string.all),
     FIRE(NavCommand.ContentType(Feature.FIRE), R.string.fire),
     WATER(NavCommand.ContentType(Feature.WATER), R.string.water)
-
-    //FIRE(NavCommand.ContentByType(Feature.POKEMONES), R.string.fire),
 }
 
 
+/**
+ * - Determina la ruta padre y el grafo de navegacion
+ * - tambien llamado, Navegacion anidada o Grafo de navegacion anidado
+ */
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
@@ -32,45 +38,30 @@ fun Navigation(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = Feature.POKEMONES.route
-
-        //startDestination = NavCommand.ContentType(Feature.POKEMONES).route
     ) {
-            pokemonesNav(navController)
-            firePokesNav(navController)
-
-        /** composable(NavCommand.ContentType(Feature.POKEMONES)) {
-            AllPokesScreen(
-                onPokeClick = { pokemon ->
-                    navController.navigate(
-                        NavCommand.ContentDetail(Feature.POKEMONES).createNavRoute(pokemon.id)
-                    )
-                }
-            )
-        }
-
-         composable(NavCommand.ContentType(Feature.FIRE)) {
-
-            FirePokesScreen(
-                onPokeClick = { pokemon ->
-                    navController.navigate(
-                        NavCommand.ContentDetail(Feature.FIRE).createNavRoute(pokemon.id)
-                    )
-                }
-            )
-        } **/
-
+        // grafo de navegacion
+        pokemonesNav(navController)
+        firePokesNav(navController)
     }
 }
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 private fun NavGraphBuilder.pokemonesNav(navController: NavHostController) {
+    /**
+     * navigation es el q se encarga de crear el grafo de navegacion
+     */
     navigation(
         startDestination = NavCommand.ContentType(Feature.POKEMONES).route,
         route = Feature.POKEMONES.route
     ) {
 
         composable(NavCommand.ContentType(Feature.POKEMONES)) {
+            /**
+             * hacemos aqui la navegacion al detalle del poke clickeado
+             * - evitamos que haga esa tarea la ui, sino deberiamos pasar
+             *  el navController por toda la app (no es correcto, dificil de mantener)
+             */
             AllPokesScreen(
                 onPokeClick = { pokemon ->
                     navController.navigate(
@@ -118,7 +109,6 @@ private fun NavGraphBuilder.firePokesNav(navController: NavHostController) {
     }
 
 }
-
 
 
 /**

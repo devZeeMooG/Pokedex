@@ -9,30 +9,24 @@ import com.zeemoog.testpokeapi.ui.screens.common.PokemonMainScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
-/** @Composable
-fun LoadPokeList(onPokeClick: (Pokemon) -> Unit) {
-    var pokemonListState by remember { mutableStateOf(emptyList<Pokemon>()) }
-
-    /**
-     * para usar 'getPokemonList()' de la interfaz 'PokemonRepository'
-     *  necesitamos de un contexto de corrutinas, para eso usamos 'LaunchedEffect()'
-     *  ya q es una 'funcion de suspension'
-     */
-
-    LaunchedEffect(Unit) {
-        pokemonListState = PokemonsRepository.getPokemonList()  // lista de pokes en gral
-    }
-    
-    PokemonMainScreen(
-        pokemons = pokemonListState,
-        onPokeClick = onPokeClick
-    )
-} **/
-
+/**
+ * VIEWMODEL
+ * - para acceder al viewmodel, lo agrego como argumento
+ * - es necesario agregar a mano a imports el viewmodel
+ * - androidx.lifecycle.viewmodel.compose.viewModel
+ */
+/**
+ * manejo el ESTADO con STATE FLOW
+ */
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun AllPokesScreen(onPokeClick: (Pokemon) -> Unit, viewModel: AllPokesViewModel = viewModel()) {
+    /**
+     * aqui se nota el "STATE HOSTING"
+     * - "estados" viajan hacia abajo
+     * - "eventos" hacia arriba
+     */
     val state by viewModel.state.collectAsState()
     PokemonMainScreen(
         pokemons = state.items,

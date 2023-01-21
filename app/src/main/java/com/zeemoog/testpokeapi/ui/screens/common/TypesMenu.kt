@@ -7,12 +7,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import com.zeemoog.testpokeapi.ui.navigation.NavItem
 
+/**
+ * crea un DropDownMenu
+ * con un listado de tipos pokes
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TypesMenu(
     typeNavOptions: List<NavItem>,
     onNavItemClick: (NavItem) -> Unit
-    //onNavItemClick: (String) -> Unit
 ) {
 
     var showMenu by remember { mutableStateOf(false) }
@@ -30,7 +33,6 @@ fun TypesMenu(
                 val type = stringResource(id = it.typeName)
                 DropdownMenuItem(
                     onClick = {
-                        //onNavItemClick(type)
                         onNavItemClick(it)
                         showMenu = false
                     }
