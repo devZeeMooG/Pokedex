@@ -1,227 +1,46 @@
 package com.zeemoog.testpokeapi.ui.navigation
 
-import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.zeemoog.testpokeapi.ui.screens.detail.DetailPokemon
-import com.zeemoog.testpokeapi.ui.screens.main.LoadPokeList
-
-/** Navigation 'SIN' implementacion de NavCommand con Feature
-@Composable
-fun Navigation(navController: NavHostController) {
-
-    /** Navegacion entra pantallas aplicando Funciones de extension
-     *  - reduce codigo y repeticion en la navegacion
-     */
-
-    /** val navController = rememberNavController()
-     *  - lo sacamos de aqui para instanciarlo en PokeApp
-     *  - para tener info de la ruta sobre la q estamos
-     */
-
-    NavHost(
-        navController = navController,
-        startDestination = NavCommand.Main.route
-    ) {
-        /** composable(route = NavCommand.Main.route) {
-         *  - sin funcion de extension del composable
-         */
-        // usando funcion de extension de composable (no necesitamos detallar route y args)
-        composable(NavCommand.Main) {
-            /**
-             * - ahora vamos a evitar pasar por todos lados el navController
-             * - ya q evitamos q un click en 'ui' sobre un poke sea el q tenga
-             *      la ruta de navegacion
-             * - y sea Navigation quien se ocupe de dicha tarea
-             */
-            //LoadPokeList(navController)
-            LoadPokeList { pokemon ->
-                /**
-                 * ahora la ruta '"detail/${pokemon.id}"'
-                 * la definimos en NavCommand
-                 */
-                navController.navigate(NavCommand.Detail.createNavRoute(pokemon.id))
-            }
-        }
-
-        /**
-         * pasamos como argumentos los parametros que necesitamos para pintar
-         * - "detail/{pokemonId}" -> el id es obligatorio (no null)
-         * - "detail?pokemonId={pokemonId}" -> se pasa o no (null)
-         * - es necesario indicar de q tipo es el argumento
-         * - como la ruta es compleja -> "detail/{pokemonId}"
-         *      y no ensucie el codigo, lo manejamos en NavCommand
-         */
-        /** composable(
-         *     route = NavCommand.Detail.route,
-         *     arguments = NavCommand.Detail.args
-         *  ) { backStackEntry ->
-         *  - sin funcion de extension composable
-         */
-        // usando funcion de extension de composable (no necesitamos detallar route y args)
-        composable(NavCommand.Detail) { backStackEntry ->
-
-            /**
-             * para recuperar el 'pokemonId' usamos el 'it (navBackStackEntry)'
-             * - se puede renombrar, en este caso lo llame 'backStackEntry'
-             */
-            val id = backStackEntry.arguments?.getInt(NavArg.PokemonId.key) //"pokemonId"
-
-            /**
-             * ocurre un problema, que el id puede ser/o no null en la declaracion
-             * por lo tanto, como sabemos q no va a ser null lo solucionamos con
-             * - requireNotNull(id)
-             *      - ademas permite agregar un msj
-             *      - (id, {no puede ser nulo xq ... })
-             */
-            requireNotNull(id)
-
-            DetailPokemon(id)
-        }
-    }
-
-} **/
+import com.zeemoog.testpokeapi.R
+import com.zeemoog.testpokeapi.ui.screens.allpoke.AllPokesScreen
+import com.zeemoog.testpokeapi.ui.screens.firepoke.FirePokesScreen
 
 
-/** Navigation 'CON' implementacion de NavCommand y Feature
- *  - navegacion generica
- */
-@Composable
-fun Navigation(navController: NavHostController, actionNameType: String) {
+enum class NavItem(
+    val navCommand: NavCommand,
+    @StringRes val typeName: Int
+) {
+    ALL(NavCommand.ContentType(Feature.POKEMONES), R.string.all),
+    FIRE(NavCommand.ContentType(Feature.FIRE), R.string.fire),
+    WATER(NavCommand.ContentType(Feature.WATER), R.string.water)
 
-    /** Navegacion entra pantallas aplicando Funciones de extension
-     *  - reduce codigo y repeticion en la navegacion
-     */
-
-    /** val navController = rememberNavController()
-     *  - lo sacamos de aqui para instanciarlo en PokeApp
-     *  - para tener info de la ruta sobre la q estamos
-     */
-
-    /** 'SIN' aplicar un grafo de navegacion
-    NavHost(
-        navController = navController,
-        startDestination = NavCommand.ContentType(Feature.POKEMONES).route  //usando Feature
-    ) {
-        pokemonesNav(navController)
-    } **/
-
-    /** 'CON' aplicacion de un grafo de navegacion exclusivo
-     *  - se aplica sobre 'startDestination'
-     *  - se instancia sobre la funcion de extension del 'NavGraphBuilder.pokemonesNav'
-     */
-
-    NavHost(
-        navController = navController,
-        /** aplicando el grafo de navegacion
-         *  - en donde ahora carga la ruta de navegation, y no la del home
-         */
-        startDestination = Feature.POKEMONES.route
-    ) {
-        pokemonesNav(navController, actionNameType)
-    }
-
+    //FIRE(NavCommand.ContentByType(Feature.POKEMONES), R.string.fire),
 }
 
-/** 'SIN' instanciar o aplicar un grafo de navegacion exclusivo
-private fun NavGraphBuilder.pokemonesNav(navController: NavHostController) {
-    /** composable(route = NavCommand.Main.route) {
-     *  - sin funcion de extension del composable
-     */
 
-    // usando funcion de extension de composable (no necesitamos detallar route y args)
-    composable(NavCommand.ContentType(Feature.POKEMONES)) {
-        /**
-         * - ahora vamos a evitar pasar por todos lados el navController
-         * - ya q evitamos q un click en 'ui' sobre un poke sea el q tenga
-         *      la ruta de navegacion
-         * - y sea Navigation quien se ocupe de dicha tarea
-         */
-        //LoadPokeList(navController)
-        LoadPokeList { pokemon ->
-            /**
-             * ahora la ruta '"detail/${pokemon.id}"'
-             * la definimos en NavCommand
-             */
-            navController.navigate(
-                NavCommand.ContentDetail(Feature.POKEMONES).createNavRoute(pokemon.id)
-            )
-        }
-    }
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+@Composable
+fun Navigation(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = Feature.POKEMONES.route
 
-    /**
-     * pasamos como argumentos los parametros que necesitamos para pintar
-     * - "detail/{pokemonId}" -> el id es obligatorio (no null)
-     * - "detail?pokemonId={pokemonId}" -> se pasa o no (null)
-     * - es necesario indicar de q tipo es el argumento
-     * - como la ruta es compleja -> "detail/{pokemonId}"
-     *      y no ensucie el codigo, lo manejamos en NavCommand
-     */
-    /** composable(
-     *     route = NavCommand.Detail.route,
-     *     arguments = NavCommand.Detail.args
-     *  ) { backStackEntry ->
-     *  - sin funcion de extension composable
-     */
-    // usando funcion de extension de composable (no necesitamos detallar route y args)
-    composable(NavCommand.ContentDetail(Feature.POKEMONES)) { backStackEntry ->
-
-        /**
-         * para recuperar el 'pokemonId' usamos el 'it (navBackStackEntry)'
-         * - se puede renombrar, en este caso lo llame 'backStackEntry'
-         */
-        val id = backStackEntry.arguments?.getInt(NavArg.PokemonId.key) //"pokemonId"
-
-        /**
-         * ocurre un problema, que el id puede ser/o no null en la declaracion
-         * por lo tanto, como sabemos q no va a ser null lo solucionamos con
-         * - requireNotNull(id)
-         *      - ademas permite agregar un msj
-         *      - (id, {no puede ser nulo xq ... })
-         */
-        requireNotNull(id)
-
-        DetailPokemon(id)
-    }
-} **/
-
-/** 'CON' aplicacion del grafo de navegacion exclusivo **/
-private fun NavGraphBuilder.pokemonesNav(navController: NavHostController, actionNameType: String) {
-    navigation(
-        startDestination = NavCommand.ContentType(Feature.POKEMONES).route, //la navegacion comienza desde 'home'
-        route = Feature.POKEMONES.route // define la ruta padre de todos los composables q esten dentro
+        //startDestination = NavCommand.ContentType(Feature.POKEMONES).route
     ) {
-        /** todos estos 'composables' son especificos de navigation
-         *  - la cual, esta navegation tiene una ruta padre (o principal) q las engloba
-         */
+            pokemonesNav(navController)
+            firePokesNav(navController)
 
-        /** composable(route = NavCommand.Main.route) {
-         *  - sin funcion de extension del composable
-         */
-
-        // usando funcion de extension de composable (no necesitamos detallar route y args)
-        composable(NavCommand.ContentType(Feature.POKEMONES)) {
-            /**
-             * - ahora vamos a evitar pasar por todos lados el navController
-             * - ya q evitamos q un click en 'ui' sobre un poke sea el q tenga
-             *      la ruta de navegacion
-             * - y sea Navigation quien se ocupe de dicha tarea
-             */
-            //LoadPokeList(navController)
-
-
-            println("------------------------: $actionNameType")
-
-            LoadPokeList(
-                actionNameType,
+        /** composable(NavCommand.ContentType(Feature.POKEMONES)) {
+            AllPokesScreen(
                 onPokeClick = { pokemon ->
-                    /**
-                     * ahora la ruta '"detail/${pokemon.id}"'
-                     * la definimos en NavCommand
-                     */
                     navController.navigate(
                         NavCommand.ContentDetail(Feature.POKEMONES).createNavRoute(pokemon.id)
                     )
@@ -229,36 +48,40 @@ private fun NavGraphBuilder.pokemonesNav(navController: NavHostController, actio
             )
         }
 
-        /**
-         * pasamos como argumentos los parametros que necesitamos para pintar
-         * - "detail/{pokemonId}" -> el id es obligatorio (no null)
-         * - "detail?pokemonId={pokemonId}" -> se pasa o no (null)
-         * - es necesario indicar de q tipo es el argumento
-         * - como la ruta es compleja -> "detail/{pokemonId}"
-         *      y no ensucie el codigo, lo manejamos en NavCommand
-         */
-        /** composable(
-         *     route = NavCommand.Detail.route,
-         *     arguments = NavCommand.Detail.args
-         *  ) { backStackEntry ->
-         *  - sin funcion de extension composable
-         */
-        // usando funcion de extension de composable (no necesitamos detallar route y args)
+         composable(NavCommand.ContentType(Feature.FIRE)) {
+
+            FirePokesScreen(
+                onPokeClick = { pokemon ->
+                    navController.navigate(
+                        NavCommand.ContentDetail(Feature.FIRE).createNavRoute(pokemon.id)
+                    )
+                }
+            )
+        } **/
+
+    }
+}
+
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+private fun NavGraphBuilder.pokemonesNav(navController: NavHostController) {
+    navigation(
+        startDestination = NavCommand.ContentType(Feature.POKEMONES).route,
+        route = Feature.POKEMONES.route
+    ) {
+
+        composable(NavCommand.ContentType(Feature.POKEMONES)) {
+            AllPokesScreen(
+                onPokeClick = { pokemon ->
+                    navController.navigate(
+                        NavCommand.ContentDetail(Feature.POKEMONES).createNavRoute(pokemon.id)
+                    )
+                }
+            )
+        }
+
         composable(NavCommand.ContentDetail(Feature.POKEMONES)) { backStackEntry ->
-
-            /**
-             * para recuperar el 'pokemonId' usamos el 'it (navBackStackEntry)'
-             * - se puede renombrar, en este caso lo llame 'backStackEntry'
-             */
-            val id = backStackEntry.arguments?.getInt(NavArg.PokemonId.key) //"pokemonId"
-
-            /**
-             * ocurre un problema, que el id puede ser/o no null en la declaracion
-             * por lo tanto, como sabemos q no va a ser null lo solucionamos con
-             * - requireNotNull(id)
-             *      - ademas permite agregar un msj
-             *      - (id, {no puede ser nulo xq ... })
-             */
+            val id = backStackEntry.arguments?.getInt(NavArg.PokemonId.key)
             requireNotNull(id)
 
             DetailPokemon(id)
@@ -266,6 +89,36 @@ private fun NavGraphBuilder.pokemonesNav(navController: NavHostController, actio
 
     }
 }
+
+
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+private fun NavGraphBuilder.firePokesNav(navController: NavHostController) {
+
+    navigation(
+        startDestination = NavCommand.ContentType(Feature.FIRE).route,
+        route = Feature.FIRE.route
+    ) {
+        composable(NavCommand.ContentType(Feature.FIRE)) {
+            FirePokesScreen(
+                onPokeClick = { pokemon ->
+                    navController.navigate(
+                        NavCommand.ContentDetail(Feature.FIRE).createNavRoute(pokemon.id)
+                    )
+                }
+            )
+        }
+
+        composable(NavCommand.ContentDetail(Feature.FIRE)) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt(NavArg.PokemonId.key)
+            requireNotNull(id)
+
+            DetailPokemon(id)
+        }
+    }
+
+}
+
 
 
 /**

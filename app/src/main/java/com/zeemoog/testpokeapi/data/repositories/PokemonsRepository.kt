@@ -51,6 +51,9 @@ object PokemonsRepository : Repository<Pokemon>() {
     // aplicando Repository (uso de cache)
 
     suspend fun getPokemonList(): List<Pokemon> = super.get {
+
+        println("------------------ QUERY BY ALL")
+
         ApiClient
             .pokeService
             .getPokemonList(20, 0)
@@ -59,12 +62,15 @@ object PokemonsRepository : Repository<Pokemon>() {
     }
 
 
-    suspend fun getPokemonListByType(name: String): List<Pokemon> = super.get {
+    /** suspend fun getPokemonListByType(name: String): List<Pokemon> = super.get {
+
+        println("------------------ QUERY BY TYPE")
+
         ApiClient
             .pokeService
             .getPokemonListByType(name)
             .pokemon.map { getPokemon(it.pokemon.id) }
-    }
+    } **/
 
 
     suspend fun getPokemon(id: Int): Pokemon = super.find(

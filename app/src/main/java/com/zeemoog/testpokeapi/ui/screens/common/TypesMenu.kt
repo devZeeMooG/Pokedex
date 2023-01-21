@@ -1,40 +1,45 @@
 package com.zeemoog.testpokeapi.ui.screens.common
 
-import android.widget.Toast
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
+import com.zeemoog.testpokeapi.ui.navigation.NavItem
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TypesMenu(
-    expanded: Boolean,
-    onItemClick: (String) -> Unit,
-    onDismiss: () -> Unit
+    typeNavOptions: List<NavItem>,
+    onNavItemClick: (NavItem) -> Unit
+    //onNavItemClick: (String) -> Unit
 ) {
 
-    val options = listOf(
-        "All",
-        "Fire",
-        "Water",
-        "Grass",
-        "Ghost"
-    )
+    var showMenu by remember { mutableStateOf(false) }
 
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismiss
-    ) {
-        options.forEach { type ->
-            DropdownMenuItem(
-                onClick = {
-                    onItemClick(type)
-                    onDismiss()
+    IconButton(onClick = { showMenu = !showMenu }) {
+        Icon(
+            imageVector = Icons.Default.MoreVert,
+            contentDescription = "More Actions"
+        )
+        DropdownMenu(
+            expanded = showMenu,
+            onDismissRequest = { showMenu = false }
+        ) {
+            typeNavOptions.forEach {
+                val type = stringResource(id = it.typeName)
+                DropdownMenuItem(
+                    onClick = {
+                        //onNavItemClick(type)
+                        onNavItemClick(it)
+                        showMenu = false
+                    }
+                ) {
+                    ListItem(text = { Text(text = type) })
                 }
-            ) {
-                Text(text = type)
             }
         }
     }
+
+
 }
