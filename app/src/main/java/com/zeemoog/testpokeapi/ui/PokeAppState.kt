@@ -34,7 +34,7 @@ class PokeAppState(val navController: NavHostController) {
          * listado de navItems
          * para la navegacion entre pokes de distintos tipos (o en general)
          */
-        val TYPE_NAV_OPTIONS = listOf(NavItem.ALL, NavItem.FIRE, NavItem.WATER)
+        val TYPE_NAV_OPTIONS = listOf(NavItem.ALL, NavItem.FIRE/**, NavItem.WATER**/)
     }
 
 
