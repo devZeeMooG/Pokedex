@@ -7,7 +7,7 @@
 
 
 * [Jetpack Compose](https://developer.android.com/jetpack/compose)
-* [Retrofit](https://github.com/square/retrofit)
+* [Retrofit](https://square.github.io/retrofit)
 * [Coil](https://coil-kt.github.io/coil)
 * [PokéAPI](https://pokeapi.co)
 
