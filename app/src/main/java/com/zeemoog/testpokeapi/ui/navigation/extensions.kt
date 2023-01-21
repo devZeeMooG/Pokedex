@@ -4,9 +4,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 fun NavHostController.navigatePoppingUpToStartDestination(route: String) {
+
     navigate(route) {
-        // navigate genera un dsl el cual permite opciones de navegacion
-        // quita toda la navegacion anterior, hasta el punto q se defina en el argumento
+        /** navigate genera un dsl el cual permite opciones de navegacion
+         quita toda la navegacion anterior, hasta el punto q se defina en el argumento **/
         popUpTo(graph.findStartDestination().id) {
             saveState = true
         }

@@ -20,6 +20,11 @@ fun PokemonMainScreen(
         items(pokemons) {
             PokemonItem(
                 pokemon = it,
+                /**
+                 * aqui hace la navegacion al detalle del poke
+                 * - pero como la ui solo debe pintar, le quitamos esa tarea
+                 * - y lo hacemos en Navigation
+                 */
                 onClick = { onPokeClick(it) }
             )
         }

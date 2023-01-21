@@ -16,7 +16,6 @@ abstract class Repository<T: Pokemon> {
         return cache
     }
 
-
     internal suspend fun find(
         id: Int,
         findActionRemote: suspend () -> T  //accion q tiene q ejecutar

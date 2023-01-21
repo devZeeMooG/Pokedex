@@ -110,6 +110,14 @@ sealed class NavCommand(
     }
 
 
+    /** class ContentByType(feature: Feature): NavCommand(feature, "home", listOf(NavArg.PokemonType)) {
+        /**
+         * en base un pokeId, devuelve una ruta de navegacion
+         */
+        fun createNavRoute(pokeType: String) = "${feature.route}/$subRoute/$pokeType"
+    } **/
+
+
     /**
      * - se encargara de crear la ruta del tipo:
      *      baseRoute/{arg1}/{arg2}/{arg3}..etc
@@ -140,5 +148,6 @@ sealed class NavCommand(
  *  - y como puede ser cualquiera, usamos <*>
  */
 enum class NavArg(val key: String, val navType: NavType<*>) {
-    PokemonId("pokemonId", NavType.IntType)
+    PokemonId("pokemonId", NavType.IntType),
+    PokemonType("pokeType", NavType.StringType)
 }

@@ -40,6 +40,12 @@ fun PokemonItem(
                     .background(Color.LightGray)
                     .fillMaxWidth()
                     .aspectRatio(1f) //de alto ocupa lo mismo q el ancho
+                    /**
+                     * - ya no queremos una ruta de navegacion aqui
+                     * - de eso se ocupa Navigation
+                     * - para eso vamos a utilizar un 'onClick' defenido
+                     *      como argumento en la funcion
+                     */
                     .clickable(onClick = onClick)
             )
         }
