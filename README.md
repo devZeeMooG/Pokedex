@@ -17,4 +17,10 @@
 * Click sobre un pokemon
 * Mostrar detalle de un pokemon
 * Manejo boton atras
+
+<p float="center">
+  <img src="screenshots/cap1.png" width="250" />
+  <img src="screenshots/cap2.png" width="250" />
+  <img src="screenshots/cap3.png" width="250" />
+</p>
    
