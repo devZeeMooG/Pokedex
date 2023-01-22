@@ -1,5 +1,5 @@
 # Pokedex
-## App Android con Kotlin, Jetpack Compose, Retrofit, Coil y consumo de la API REST de Pokémon
+## App Android con Kotlin, Jetpack Compose, Navigation, Retrofit, Coil y consumo de la API REST de Pokémon
 
 [![Android Studio](https://img.shields.io/badge/Android_Studio-2022.1.1-blue.svg?longCache=true&style=popout-square)](https://developer.android.com/studio)
 [![Android](https://img.shields.io/badge/Android-13-green.svg?longCache=true&style=popout-square)](https://www.android.com)
@@ -7,6 +7,7 @@
 
 
 * [Jetpack Compose](https://developer.android.com/jetpack/compose)
+* [Navigation](https://developer.android.com/jetpack/androidx/releases/navigation)
 * [Retrofit](https://square.github.io/retrofit)
 * [Coil](https://coil-kt.github.io/coil)
 * [PokéAPI](https://pokeapi.co)
