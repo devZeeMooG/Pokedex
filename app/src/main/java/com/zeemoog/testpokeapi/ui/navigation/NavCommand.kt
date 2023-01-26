@@ -11,17 +11,16 @@ import androidx.navigation.navArgument
 import com.zeemoog.testpokeapi.R
 
 /**
- * identifica los elementos de navegacion
- *  - y a su vez utilizo para llenar el dropdownmenu por tipo en la appbar
- *      - tomando su nombre
+ * Contiene un navCommand (comando de navegacion o ruta)
+ * y recurso string que identifica tipo o en general
  */
 enum class NavItem(
     val navCommand: NavCommand,
-    @StringRes val title: Int
+    @StringRes val typeName: Int
 ) {
     ALL(NavCommand.ContentType(Feature.POKEMONES), R.string.all),
-    FIRE(NavCommand.ContentType(Feature.FIREPOKES), R.string.firepokes),
-    WATER(NavCommand.ContentType(Feature.WATERPOKES), R.string.waterpokes)
+    FIRE(NavCommand.ContentType(Feature.FIRE), R.string.fire),
+    WATER(NavCommand.ContentType(Feature.WATER), R.string.water)
 }
 
 

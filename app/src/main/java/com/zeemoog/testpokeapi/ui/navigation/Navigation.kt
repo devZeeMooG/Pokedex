@@ -14,20 +14,6 @@ import com.zeemoog.testpokeapi.ui.screens.firepoke.FirePokesScreen
 
 
 /**
- * Contiene un navCommand (comando de navegacion o ruta)
- * y recurso string que identifica tipo o en general
- */
-enum class NavItem(
-    val navCommand: NavCommand,
-    @StringRes val typeName: Int
-) {
-    ALL(NavCommand.ContentType(Feature.POKEMONES), R.string.all),
-    FIRE(NavCommand.ContentType(Feature.FIRE), R.string.fire),
-    WATER(NavCommand.ContentType(Feature.WATER), R.string.water)
-}
-
-
-/**
  * - Determina la ruta padre y el grafo de navegacion
  * - tambien llamado, Navegacion anidada o Grafo de navegacion anidado
  */
